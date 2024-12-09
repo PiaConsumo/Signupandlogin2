@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log In & Sign Up</title>
+  
+</head>
+<body>
+
+    <div class="container" id="loginForm">
+        <h1>Log In</h1>
+        <form onsubmit="event.preventDefault(); login();">
+            <table>
+                <tr>
+                    <td>Username:</td>
+                    <td><input type="text" id="txt_username" placeholder="Username" required></td>
+                </tr>
+                <tr>
+                    <td>Password:</td>
+                    <td><input type="password" id="txt_password" placeholder="Password" required></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <button type="submit">LOG IN</button>
+                    </td>
+                </tr>
+            </table>
+            <div class="message">Don't have an account? <a href="#" onclick="showSignup()">Sign Up</a></div>
+        </form>
+    </div>
+
+    <div class="container" id="signupForm" style="display: none;">
+        <h1>Sign Up</h1>
+        <form onsubmit="event.preventDefault(); signup();">
+            <table>
+                <tr>
+                    <td>Username:</td>
+                    <td><input type="text" id="signup_username" placeholder="Username" required></td>
+                </tr>
+                <tr>
+                    <td>Password:</td>
+                    <td><input type="password" id="signup_password" placeholder="Password" required></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <button type="submit">SIGN UP</button>
+                   </td>
+                </tr>
+            </table>
+            <div class="message">Already have an account? <a href="#" onclick="showLogin()">Log In</a></div>
+        </form>
+    </div>
+
+    <script>
+        function signup() {
+            const username = document.getElementById("signup_username").value.trim();
+            const password = document.getElementById("signup_password").value.trim();
+            
+            if (username && password) {
+                alert("Sign Up Successful!");
+                
+                // Store the user in localStorage
+                const users = JSON.parse(localStorage.getItem("users")) || [];
+                users.push({ username, password });
+                localStorage.setItem("users", JSON.stringify(users));
+
+                // Reset form and switch to login
+                document.getElementById("signup_username").value = "";
+                document.getElementById("signup_password").value = "";
+                showLogin();
+            } else {
+                alert("Please fill out all fields.");
+            }
+        }
+
+        function login() {
+            const username = document.getElementById("txt_username").value.trim();
+            const password = document.getElementById("txt_password").value.trim();
+            
+            const users = JSON.parse(localStorage.getItem("users")) || [];
+            const user = users.find(u => u.username === username && u.password === password);
+            
+            if (user) {
+                alert("Login Successful!");
+            } else {
+                alert("Invalid Username or Password.");
+            }
+        }
+
+        function showSignup() {
+            document.getElementById("loginForm").style.display = "none";
+            document.getElementById("signupForm").style.display = "block";
+        }
+
+        function showLogin() {
+            document.getElementById("signupForm").style.display = "none";
+            document.getElementById("loginForm").style.display = "block";
+        }
+    </script>
+
+</body>
+</html>
+
+<style>
+     
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+        }
+
+        td {
+            padding: 10px 0;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .message {
+            text-align: center;
+            margin-top: 10px;
+            color: #555;
+        }
+    
+</style>
